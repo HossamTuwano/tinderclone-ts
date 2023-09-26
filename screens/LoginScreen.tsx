@@ -32,18 +32,22 @@ export default function Login({ navigation }: LoginProps) {
   const nav: NavigationProp<ParamListBase> = useNavigation();
   const secondInput: any = useRef(null);
   const firstInput = useRef(null);
-  const onHandleLogin = () => {
+
+  function onHandleLogin() {
     setLoading(true);
     if (email !== "" && password !== "") {
-      signInWithEmailAndPassword(auth, email, password)
+      return signInWithEmailAndPassword(auth, email, password)
         .then(() => {
           setLoading(false);
           nav.navigate("Home");
           console.log("Login success");
         })
-        .catch((err) => Alert.alert("Login error", err.message));
+        .catch((err) => {
+          Alert.alert("Login error", err.message);
+          setLoading(false);
+        });
     }
-  };
+  }
 
   return (
     <SafeAreaView style={tw`flex justify-center h-full `}>
