@@ -1,11 +1,14 @@
 import React from "react";
 import StackNavigator from "./StackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
+import { AuthProvider } from "./hooks/useAuth";
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <StackNavigator></StackNavigator>
+      <AuthProvider>
+        <StackNavigator />
+      </AuthProvider>
     </NavigationContainer>
   );
 };
