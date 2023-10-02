@@ -8,12 +8,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "process.env.EXPO_PUBLIC_API_KEY",
-  authDomain: "tinderclone-ts.firebaseapp.com",
-  projectId: "tinderclone-ts",
-  storageBucket: "tinderclone-ts.appspot.com",
-  messagingSenderId: "505377631875",
-  appId: "1:505377631875:web:dbe063966c54557f1f35b6",
+  apiKey: process.env.EXPO_PUBLIC_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_APP_ID,
 };
 
 // Initialize Firebase
