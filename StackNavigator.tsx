@@ -7,7 +7,14 @@ import ChatScreen from "./screens/ChatScreen";
 import MessageScreen from "./screens/MessageScreen";
 import ModalScreen from "./screens/ModalScreen";
 
-export type ScreenNames = ["Home", "Chat", "Message", "Modal"];
+export type ScreenNames = [
+  "Login",
+  "Home",
+  "Chat",
+  "Message",
+  "Modal",
+  "Signup"
+];
 
 type RootStackParamList = Record<ScreenNames[number], undefined>;
 
@@ -16,6 +23,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function StackNavigator() {
   return (
     <Stack.Navigator>
+      {/* <Stack.Screen name="Signup" component={SignupScreen} /> */}
+
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Group>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />

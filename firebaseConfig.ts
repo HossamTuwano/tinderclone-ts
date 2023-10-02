@@ -8,7 +8,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBI99l3XqffNhWyBEcnyWRkBIO01e7wqao",
+  apiKey: "process.env.EXPO_PUBLIC_API_KEY",
   authDomain: "tinderclone-ts.firebaseapp.com",
   projectId: "tinderclone-ts",
   storageBucket: "tinderclone-ts.appspot.com",
@@ -17,6 +17,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+
 initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const database = getFirestore();

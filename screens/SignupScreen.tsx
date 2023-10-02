@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,23 +14,28 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, database } from "../firebaseConfig";
 import tw from "twrnc";
-import { useNavigation } from "@react-navigation/native";
+import {
+  useNavigation,
+  ParamListBase,
+  NavigationProp,
+} from "@react-navigation/native";
 
-interface SignupProps {
-  navigation: {
-    navigate: (screenName: string) => void;
-  };
-}
-
-export default function Signup({ navigation }: SignupProps) {
+export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [imageURL, setImageURL] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const nav: any = useNavigation();
+  const nav: NavigationProp<ParamListBase> = useNavigation();
+
+  useEffect(() => {
+    if (name && password && email) {
+      nav.navigate("Login");
+    }
+  }, [loading, nav]);
 
   const onHandleSignup = async () => {
+    setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -46,9 +51,9 @@ export default function Signup({ navigation }: SignupProps) {
         photoURL: "",
         phoneNumber: "",
       });
-      nav.navigate("Home");
-    } catch {
-      (err: any) => Alert.alert("Login error", err.message);
+      setLoading(false);
+    } catch (err: any) {
+      Alert.alert("Login error", err.message);
     }
   };
 
@@ -90,15 +95,12 @@ export default function Signup({ navigation }: SignupProps) {
             value={password}
             onChangeText={(text) => setPassword(text)}
           />
-          <TextInput
-            style={tw`mb-4 border h-12`}
-            placeholder="Enter image URL"
-            value={imageURL}
-            onChangeText={(text) => setImageURL(text)}
-          />
+
           {/* Signup Button */}
           <TouchableOpacity onPress={onHandleSignup}>
-            <Text style={tw`text-center text-lg`}>Sign Up</Text>
+            <Text style={tw`text-center text-lg`}>
+              {!loading ? "Sign Up" : "Loading ..."}
+            </Text>
           </TouchableOpacity>
           {/* Navigation to Login Screen */}
           <View
@@ -112,7 +114,7 @@ export default function Signup({ navigation }: SignupProps) {
             <Text style={{ color: "gray", fontWeight: "600", fontSize: 14 }}>
               Don't have an account?{" "}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity onPress={() => nav.navigate("Login")}>
               <Text
                 style={{ color: "#f57c00", fontWeight: "600", fontSize: 14 }}
               >

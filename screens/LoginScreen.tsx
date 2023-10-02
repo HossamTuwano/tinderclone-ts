@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   View,
@@ -18,32 +18,36 @@ import {
   NavigationProp,
 } from "@react-navigation/native";
 
-interface LoginProps {
-  navigation: {
-    navigate: (screenName: string) => void;
-  };
-}
+interface LoginProps {}
 
-export default function Login({ navigation }: LoginProps) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [error, setError] = useState(null);
   const nav: NavigationProp<ParamListBase> = useNavigation();
   const secondInput: any = useRef(null);
   const firstInput = useRef(null);
+
+  useEffect(() => {
+    if (loading === false && email && password) {
+      nav.navigate("Home");
+    }
+  }, [loading, nav]);
 
   function onHandleLogin() {
     setLoading(true);
     if (email !== "" && password !== "") {
       return signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          setLoading(false);
-          nav.navigate("Home");
           console.log("Login success");
         })
         .catch((err) => {
           Alert.alert("Login error", err.message);
+          setError(err.message);
+        })
+        .finally(() => {
+          // login stays false on success or failure
           setLoading(false);
         });
     }
@@ -103,7 +107,7 @@ export default function Login({ navigation }: LoginProps) {
             <Text style={{ color: "gray", fontWeight: "600", fontSize: 14 }}>
               Don't have an account?{" "}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+            <TouchableOpacity onPress={() => nav.navigate("Signup")}>
               <Text
                 style={{ color: "#f57c00", fontWeight: "600", fontSize: 14 }}
               >
